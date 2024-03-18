@@ -1,4 +1,4 @@
-from services.GameStateSelf import GameState
+from external_communication.game_engine.GameStateSelf import GameState
 
 class GameEngine:
     """

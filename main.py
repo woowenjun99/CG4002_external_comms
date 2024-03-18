@@ -1,9 +1,9 @@
 from multiprocessing import Process, Queue
 from external_communication.grpc.grpc_server_process import grpc_server_process
-from processes.mqtt_server_process import mqtt_server_process
+from external_communication.mqtt.mqtt_server_process import mqtt_server_process
 from external_communication.evaluation_client.evaluation_client_process import evaluation_client_process
-from processes.mqtt_client_process import mqtt_client_process
-from processes.game_engine_process import game_engine_process
+from external_communication.mqtt.mqtt_client_process import mqtt_client_process
+from external_communication.game_engine.game_engine_process import game_engine_process
 from external_communication.grpc.grpc_client_process import grpc_client_process
 from utils.logger import Logger
 

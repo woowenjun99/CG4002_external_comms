@@ -1,4 +1,4 @@
-from api.mqtt_client import MqttClient
+from external_communication.mqtt.mqtt_client import MqttClient
 from multiprocessing import Queue
 from json import loads
 from utils.logger import Logger

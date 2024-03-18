@@ -1,5 +1,5 @@
 from socket import *
-from utils.encryption import SecureMessenger
+from external_communication.evaluation_client.encryption import SecureMessenger
 
 class EvaluationClient:
     def __init__(self, port_num: int) -> None:

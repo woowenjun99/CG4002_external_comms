@@ -1,4 +1,4 @@
-from services.GameEngine import GameEngine
+from external_communication.game_engine.GameEngine import GameEngine
 from multiprocessing import Queue
 from json import dumps, loads
 from time import time

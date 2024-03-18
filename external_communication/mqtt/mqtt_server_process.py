@@ -1,6 +1,6 @@
 from utils.logger import Logger
 from logging import ERROR
-from api.mqtt_server import MqttServer
+from external_communication.mqtt.mqtt_server import MqttServer
 from multiprocessing import Queue
 
 def mqtt_server_process(action_queue: Queue, incoming_from_mqtt_queue: Queue):
