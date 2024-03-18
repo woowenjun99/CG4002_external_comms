@@ -1,0 +1,12 @@
+.pytest_cache/
+__pycache__/
+venv/
+
+# Packages
+grpc/
+pynq/
+Crypto/
+google/
+paho/
+humanfriendly/
+coloredlogs/
