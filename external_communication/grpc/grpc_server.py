@@ -3,6 +3,7 @@ from ai.ai_logic import AILogic
 from multiprocessing import Queue
 from json import dumps
 import pb.relay_node_pb2 as relay__node__pb2
+from utils.logger import Logger
 
 class RelayNodeServicer(RelayNodeServicer):
     def __init__(self, action_queue: Queue):
@@ -11,6 +12,7 @@ class RelayNodeServicer(RelayNodeServicer):
         super().__init__()
 
     def processAi(self, request, context):
+        Logger.log(request)
         action = None
         if request.test_action:
             action = request.test_action

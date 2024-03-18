@@ -15,7 +15,7 @@ class AILogic:
     def process(self, message: List[List[float]]) -> str:
         ####################### Start of AI logic ########################
         start = perf_counter()
-        ai_actions = ["ironMan", "hulk", "captAmerica", "shangChi", "bomb", "shield", "reload", "logout"]
+        ai_actions = ["ironMan", "hulk", "captAmerica", "shangChi", "bomb", "shield", "reload", "logout", "nothing"]
         sample = np.array(message)
         X = []
         for i in range(6):

@@ -4,14 +4,14 @@ from json import dumps, loads
 from time import time
 
 def game_engine_process(
-        action_queue: Queue,
-        incoming_from_mqtt_queue: Queue, 
-        outgoing_to_mqtt_queue: Queue,
-        send_eval_server_game_state_queue: Queue,
-        update_game_state_queue: Queue,
-        num_players: int,
-        does_not_have_visualiser,
-        grpc_client_queue: Queue
+    action_queue: Queue,
+    incoming_from_mqtt_queue: Queue, 
+    outgoing_to_mqtt_queue: Queue,
+    send_eval_server_game_state_queue: Queue,
+    update_game_state_queue: Queue,
+    num_players: int,
+    does_not_have_visualiser,
+    grpc_client_queue: Queue
 ):
     # Initialise game engine and send the initial values over
     game_engine = GameEngine(num_players, does_not_have_visualiser)
@@ -21,6 +21,23 @@ def game_engine_process(
         message = loads(action_queue.get())
         action = message["action"]
         player_id = message["player_id"]
+        timestamp = time()
+        
+        # If there is no action, we just inform the MQTT
+        if action == "nothing":
+            predicted_game_state = game_engine.game_state.get_dict()
+            outgoing_to_mqtt_queue.put(dumps({
+                "topic": "to_visualiser/gamestate/",
+                "action": action,
+                "game_state": {
+                    "p1": predicted_game_state["p1"],
+                    "p2": predicted_game_state["p2"]
+                },
+                "player_id": player_id,
+                "status": "Please Redo!",
+                "timestamp": timestamp
+            }))
+            continue
 
         is_in_vision = True
         if action not in action_not_requiring_visibility_check:
@@ -29,7 +46,7 @@ def game_engine_process(
                     "topic": f"to_visualiser/visibility/p{player_id}",
                     "player_id": player_id, 
                     "request_data": True,
-                    "timestamp": time()
+                    "timestamp": timestamp
                 }))
                 # NOTE Need to check if player_id == received_message.player_id
                 received_message = incoming_from_mqtt_queue.get(timeout=2)
@@ -64,7 +81,7 @@ def game_engine_process(
             "player_id": player_id,
             "action": action,
             "status": status,
-            "timestamp": time()
+            "timestamp": timestamp
         }))
 
         grpc_client_queue.put(dumps({
