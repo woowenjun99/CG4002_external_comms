@@ -1,5 +1,5 @@
 import grpc
-from external_communication.pb.relay_node_pb2_grpc import RelayNodeStub
+from pb.relay_node_pb2_grpc import RelayNodeStub
 
 class GrpcClient:
     def __init__(self) -> None:

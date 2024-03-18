@@ -1,5 +1,5 @@
 import grpc
-import external_communication.pb.relay_node_pb2_grpc as relay_node_pb2_grpc
+import pb.relay_node_pb2_grpc as relay_node_pb2_grpc
 from concurrent import futures
 from external_communication.grpc.grpc_server import RelayNodeServicer
 from utils.logger import Logger

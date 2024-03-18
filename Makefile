@@ -3,7 +3,7 @@ tunnel:
 
 protoc:
 	rm -f pb/*.py
-	python3 -m grpc_tools.protoc -Iproto --python_out=external_communication/pb --pyi_out=external_communication/pb --grpc_python_out=external_communication/pb proto/*.proto
+	python3 -m grpc_tools.protoc -Iproto --python_out=pb --pyi_out=pb --grpc_python_out=pb proto/*.proto
 
 run:
 	python3 main.py

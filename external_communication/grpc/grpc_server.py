@@ -1,8 +1,8 @@
-from external_communication.pb.relay_node_pb2_grpc import RelayNodeServicer
+from pb.relay_node_pb2_grpc import RelayNodeServicer
 from ai.ai_logic import AILogic
 from multiprocessing import Queue
 from json import dumps
-import external_communication.pb.relay_node_pb2 as relay__node__pb2
+import pb.relay_node_pb2 as relay__node__pb2
 
 class RelayNodeServicer(RelayNodeServicer):
     def __init__(self, action_queue: Queue):
