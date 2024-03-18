@@ -7,7 +7,7 @@ import statistics
 
 class AILogic:
     def __init__(self):
-        overlay = Overlay("/home/xilinx/external_comms/services/design_1.bit")
+        overlay = Overlay("/home/xilinx/external_comms/ai/design_1.bit")
         self.dma = overlay.axi_dma_0
         self.input_buffer = allocate(shape=(600,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)

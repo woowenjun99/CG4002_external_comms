@@ -1,4 +1,4 @@
-from services.ai_logic import AILogic
+from ai.ai_logic import AILogic
 from random import randint
 
 if __name__ == "__main__":

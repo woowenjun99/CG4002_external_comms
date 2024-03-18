@@ -1,5 +1,5 @@
 from pb.relay_node_pb2_grpc import RelayNodeServicer
-from services.ai_logic import AILogic
+from ai.ai_logic import AILogic
 from multiprocessing import Queue
 from json import dumps
 import pb.relay_node_pb2 as relay__node__pb2
