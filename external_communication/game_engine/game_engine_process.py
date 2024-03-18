@@ -15,14 +15,15 @@ def game_engine_process(
 ):
     # Initialise game engine and send the initial values over
     game_engine = GameEngine(num_players, does_not_have_visualiser)
-
+    action_not_requiring_visibility_check = ["oppStepIntoBomb", "logout"]
+    action_not_requiring_update_to_eval_server = ["oppStepIntoBomb"]
     while True:
         message = loads(action_queue.get())
         action = message["action"]
         player_id = message["player_id"]
 
         is_in_vision = True
-        if action != "oppStepIntoBomb" and action != "logout":
+        if action not in action_not_requiring_visibility_check:
             try: 
                 outgoing_to_mqtt_queue.put(dumps({
                     "topic": f"to_visualiser/visibility/p{player_id}",
@@ -40,7 +41,7 @@ def game_engine_process(
 
         # Update the game state logic by getting the correct game state from evaluation server
         # we dont update eval server if its oppstepintobomb
-        if action != "oppStepIntoBomb":
+        if action not in action_not_requiring_update_to_eval_server:
             try:
                 send_eval_server_game_state_queue.put(dumps({
                     "action": action,

@@ -1,5 +1,14 @@
 import random
 
+# Status Enum
+
+class Status:
+    INVALID_GUN = "Shoot - No bullets left"
+    INVALID_SHIELD = "Shield - No shields left"
+    INVALID_BOMB = "Bomb - No bombs left"
+    INVALID_RELOAD = "Reload - Not allowed!"
+    VALID = "valid"
+    
 class GameState:
     """
     Encapsulation of the game state
@@ -87,18 +96,20 @@ class GameState:
         if action == "gun":
             status = attacker.shoot(opponent, player_id_can_see_opp)
             if (status == False):
-                return "invalid_gun"
+                return Status.INVALID_GUN
         elif action == "shield":
             status = attacker.shield()
             if (status == False):
-                return "invalid_shield"
+                return Status.INVALID_SHIELD
         elif action == "bomb":
             status = attacker.bomb(opponent, player_id_can_see_opp)
             if (status == False):
-                return "invalid_bomb"
-            
+                return Status.INVALID_BOMB      
         elif action == "reload":
-            attacker.reload()
+            status = attacker.reload()
+            if (status == False):
+                return Status.INVALID_RELOAD
+
         elif action in {"ironMan", "hulk", "captAmerica", "shangChi"}:
             # all these have the same behaviour
             attacker.harm_AI(opponent, player_id_can_see_opp)
@@ -111,7 +122,7 @@ class GameState:
             # invalid action we do nothing
             pass
 
-        return "valid"
+        return Status.VALID
 
     @staticmethod
     def _can_see(position_1, position_2):
@@ -260,3 +271,6 @@ class Player:
         """ perform reload only if the magazine is empty"""
         if self.num_bullets <= 0:
             self.num_bullets = self.max_bullets
+            return True
+        else:
+            return False
