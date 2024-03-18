@@ -1,10 +1,10 @@
 from multiprocessing import Process, Queue
-from processes.grpc_server_process import grpc_server_process
+from external_communication.grpc.grpc_server_process import grpc_server_process
 from processes.mqtt_server_process import mqtt_server_process
-from processes.evaluation_client_process import evaluation_client_process
+from external_communication.evaluation_client.evaluation_client_process import evaluation_client_process
 from processes.mqtt_client_process import mqtt_client_process
 from processes.game_engine_process import game_engine_process
-from processes.grpc_client_process import grpc_client_process
+from external_communication.grpc.grpc_client_process import grpc_client_process
 from utils.logger import Logger
 
 def get_user_input():
@@ -25,10 +25,7 @@ def get_user_input():
             Logger.log("invalid input format")   
 
 if __name__ == "__main__":
-    #port_num, num_players, does_not_have_visualiser = get_user_input()
-    port_num = 10000
-    num_players = 1
-    does_not_have_visualiser = True
+    port_num, num_players, does_not_have_visualiser = get_user_input()
 
     send_eval_server_game_state_queue = Queue()
     update_game_state_queue = Queue()

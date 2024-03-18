@@ -1,6 +1,6 @@
-from api.grpc_client import GrpcClient
+from external_communication.grpc.grpc_client import GrpcClient
 from multiprocessing import Queue
-from pb.relay_node_pb2 import GameStateRequest
+from external_communication.pb.relay_node_pb2 import GameStateRequest
 from json import loads
 
 def grpc_client_process(grpc_client_queue: Queue):

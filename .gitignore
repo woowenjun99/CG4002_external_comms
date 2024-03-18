@@ -1,12 +1,10 @@
 .pytest_cache/
 __pycache__/
 venv/
+.DS_Store
 
 # Packages
 grpc/
+!/external_communication/grpc/
 pynq/
-Crypto/
 google/
-paho/
-humanfriendly/
-coloredlogs/
