@@ -41,6 +41,7 @@ def game_engine_process(
 
         is_in_vision = True
         if action not in action_not_requiring_visibility_check:
+            # check for visibility
             try: 
                 outgoing_to_mqtt_queue.put(dumps({
                     "topic": f"to_visualiser/visibility/p{player_id}",
@@ -51,7 +52,14 @@ def game_engine_process(
                 # NOTE Need to check if player_id == received_message.player_id
                 received_message = incoming_from_mqtt_queue.get(timeout=2)
                 is_in_vision = loads(received_message)["opponent_in_view"]
-            except: is_in_vision = False
+                number_of_fire = loads(received_message)["number_of_fire"]
+            except: 
+                is_in_vision = False
+                number_of_fire = 0
+
+        if (number_of_fire > 0):
+            for _ in range(number_of_fire):
+                game_engine.perform_action("oppStepIntoBomb", player_id, True)
 
         status = game_engine.perform_action(action, player_id, is_in_vision)
         predicted_game_state = game_engine.game_state.get_dict()
