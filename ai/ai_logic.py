@@ -35,8 +35,10 @@ class AILogic:
         self.dma.recvchannel.transfer(self.output_buffer)
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
-        result = ai_actions[int(self.output_buffer[0])]
-        # result = ai_actions[randint(0, len(ai_actions) - 1)]
+        try:
+            result = ai_actions[int(self.output_buffer[0])]
+        except:
+            result = ai_actions[-1]
         ####################### End of AI logic ##########################
 
         return result
