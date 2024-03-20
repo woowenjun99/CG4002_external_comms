@@ -40,6 +40,7 @@ def game_engine_process(
             continue
 
         is_in_vision = True
+        number_of_fire = 0
         if action not in action_not_requiring_visibility_check:
             # check for visibility
             try: 
