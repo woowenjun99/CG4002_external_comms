@@ -19,7 +19,6 @@ class AILogic:
         sample = np.array(message)
         for m in sample:
             for n in m:
-                n *= 1000
                 if n >= 32768:
                     binary = bin(n)
                     binary = binary[2:]
@@ -46,7 +45,9 @@ class AILogic:
         self.dma.recvchannel.transfer(self.output_buffer)
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
+
         result = ai_actions[int(self.output_buffer[0])]
+
         # result = ai_actions[randint(0, len(ai_actions) - 1)]
         ####################### End of AI logic ##########################
         return result
