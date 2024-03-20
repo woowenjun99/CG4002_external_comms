@@ -4,19 +4,30 @@ from scipy.stats import median_absolute_deviation, iqr
 from pynq import Overlay, allocate
 import numpy as np
 import statistics
+from utils.logger import Logger, INFO
 
 class AILogic:
     def __init__(self):
         overlay = Overlay("/home/xilinx/external_comms/ai/design_1.bit")
         self.dma = overlay.axi_dma_0
-        self.input_buffer = allocate(shape=(600,), dtype=np.float32)
+        self.input_buffer = allocate(shape=(36,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
     
     def process(self, message: List[List[float]]) -> str:
         ####################### Start of AI logic ########################
-        start = perf_counter()
         ai_actions = ["ironMan", "hulk", "captAmerica", "shangChi", "bomb", "shield", "reload", "logout", "nothing"]
         sample = np.array(message)
+        for m in sample:
+            for n in m:
+                n *= 1000
+                if n >= 32768:
+                    binary = bin(n)
+                    binary = binary[2:]
+                    inverted = ''.join('10'[int(x)] for x in binary)
+                    n = int(inverted, 2)
+                    n += 1
+                    n *= -1
+                n /= 1000.0
         X = []
         for i in range(6):
             vals = sample[:,i]
@@ -35,10 +46,7 @@ class AILogic:
         self.dma.recvchannel.transfer(self.output_buffer)
         self.dma.sendchannel.wait()
         self.dma.recvchannel.wait()
-        try:
-            result = ai_actions[int(self.output_buffer[0])]
-        except:
-            result = ai_actions[-1]
+        result = ai_actions[int(self.output_buffer[0])]
+        # result = ai_actions[randint(0, len(ai_actions) - 1)]
         ####################### End of AI logic ##########################
-
         return result
