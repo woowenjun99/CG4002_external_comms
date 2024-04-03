@@ -10,7 +10,7 @@ class AILogic:
     def __init__(self):
         overlay = Overlay("/home/xilinx/external_comms/ai/design_1.bit")
         self.dma = overlay.axi_dma_0
-        self.input_buffer = allocate(shape=(48,), dtype=np.float32)
+        self.input_buffer = allocate(shape=(36,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
     
     def process(self, message: List[List[float]]) -> str:
