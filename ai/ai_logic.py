@@ -34,6 +34,7 @@ class AILogic:
             for val in v:
                 val = val / (max + 1e-12)
             sample[:,dim] = v
+        print(f"SAMPLE: {sample}")
         for i in range(6):
             vals = sample[:,i]
             mean = statistics.mean(vals)
@@ -55,7 +56,7 @@ class AILogic:
         self.dma.recvchannel.wait()
 
         result = ai_actions[int(self.output_buffer[0])]
-
+        print(f"THE RESULT IS {result}")
         # result = ai_actions[randint(0, len(ai_actions) - 1)]
         ####################### End of AI logic ##########################
         return result
