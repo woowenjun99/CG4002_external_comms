@@ -16,16 +16,9 @@ class AILogic:
     def process(self, message: List[List[float]]) -> str:
         ####################### Start of AI logic ########################
         ai_actions = ["ironMan", "hulk", "captAmerica", "shangChi", "bomb", "shield", "reload", "logout", "nothing"]
-        sample = np.array(message)
+        sample = np.array(message, dtype=np.float32)
         for m in sample:
             for n in m:
-                if n >= 32768:
-                    binary = bin(n)
-                    binary = binary[2:]
-                    inverted = ''.join('10'[int(x)] for x in binary)
-                    n = int(inverted, 2)
-                    n += 1
-                    n *= -1
                 n /= 1000.0
         X = []
         for dim in range(6):
