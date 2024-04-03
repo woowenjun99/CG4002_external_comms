@@ -28,6 +28,12 @@ class AILogic:
                     n *= -1
                 n /= 1000.0
         X = []
+        for dim in range(6):
+            v = sample[:,dim]
+            max = np.max(dim)
+            for val in v:
+                val = val / (max + 1e-12)
+            sample[:,dim] = v
         for i in range(6):
             vals = sample[:,i]
             mean = statistics.mean(vals)
