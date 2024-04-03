@@ -1,6 +1,6 @@
 from typing import List
 from time import perf_counter
-from scipy.stats import median_absolute_deviation, iqr
+from scipy.stats import median_absolute_deviation, iqr, skew, kurtosis
 from pynq import Overlay, allocate
 import numpy as np
 import statistics
@@ -10,7 +10,7 @@ class AILogic:
     def __init__(self):
         overlay = Overlay("/home/xilinx/external_comms/ai/design_1.bit")
         self.dma = overlay.axi_dma_0
-        self.input_buffer = allocate(shape=(36,), dtype=np.float32)
+        self.input_buffer = allocate(shape=(48,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
     
     def process(self, message: List[List[float]]) -> str:
@@ -42,7 +42,9 @@ class AILogic:
             inqr = iqr(vals)
             max = np.max(vals)
             min = np.min(vals)
-            col = [mean, mad, std, inqr, max, min]
+            skewness = skew(vals)
+            kurtosis = kurtosis(vals)
+            col = [mean, mad, std, inqr, max, min, skewness, kurtosis]
             X.extend(col)
 
         for i, n in enumerate(X):
