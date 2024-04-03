@@ -36,9 +36,9 @@ class AILogic:
             inqr = iqr(vals)
             max = np.max(vals)
             min = np.min(vals)
-            skewness = skew(vals)
-            kurtosis = kurtosis(vals)
-            col = [mean, mad, std, inqr, max, min, skewness, kurtosis]
+            # skewness = skew(vals)
+            # kurtosis = kurtosis(vals)
+            col = [mean, mad, std, inqr, max, min]
             X.extend(col)
 
         for i, n in enumerate(X):
