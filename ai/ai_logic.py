@@ -49,7 +49,8 @@ class AILogic:
             self.dma.sendchannel.wait()
             self.dma.recvchannel.wait()
             result = ai_actions[int(self.output_buffer[0])]
-        except:
+        except Exception as e:
+            print(f"ERROR is {e}")
             result = ai_actions[-1]
         print(f"THE RESULT IS {result}")
         # result = ai_actions[randint(0, len(ai_actions) - 1)]
