@@ -43,11 +43,11 @@ class AILogic:
 
         for i, n in enumerate(X):
             self.input_buffer[i] = n
-        self.dma.sendchannel.transfer(self.input_buffer)
-        self.dma.recvchannel.transfer(self.output_buffer)
-        self.dma.sendchannel.wait()
-        self.dma.recvchannel.wait()
         try:
+            self.dma.sendchannel.transfer(self.input_buffer)
+            self.dma.recvchannel.transfer(self.output_buffer)
+            self.dma.sendchannel.wait()
+            self.dma.recvchannel.wait()
             result = ai_actions[int(self.output_buffer[0])]
         except:
             result = ai_actions[-1]
