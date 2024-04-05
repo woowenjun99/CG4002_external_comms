@@ -4,7 +4,7 @@ package relay_node;
 
 // NOTE: Providing a value of 0 will render the field not provided
 message FromRelayNodeRequest {
-    repeated float values = 1;
+    repeated double values = 1;
     int32 player_id = 2;
     bool shoot_detected = 3;
     bool ir_detected = 4;
