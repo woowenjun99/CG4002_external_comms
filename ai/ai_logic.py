@@ -10,23 +10,15 @@ class AILogic:
     def __init__(self):
         overlay = Overlay("/home/xilinx/external_comms/ai/design_1.bit")
         self.dma = overlay.axi_dma_0
-        self.input_buffer = allocate(shape=(36,), dtype=np.float32)
+        self.input_buffer = allocate(shape=(48,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
     
     def process(self, message: List[List[float]]) -> str:
         ####################### Start of AI logic ########################
         ai_actions = ["ironMan", "hulk", "captAmerica", "shangChi", "bomb", "shield", "reload", "logout", "nothing"]
-        sample = np.array(message, dtype=np.float32)
-        for m in sample:
-            for n in m:
-                n /= 1000.0
+        sample = np.array(message, dtype=np.float64)
         X = []
-        for dim in range(6):
-            v = sample[:,dim]
-            max = np.max(dim)
-            for val in v:
-                val = val / (max + 1e-12)
-            sample[:,dim] = v
+        sample = sample / sample.max(axis=0)
         print(f"SAMPLE: {sample}")
         for i in range(6):
             vals = sample[:,i]
@@ -36,9 +28,9 @@ class AILogic:
             inqr = iqr(vals)
             max = np.max(vals)
             min = np.min(vals)
-            # skewness = skew(vals)
-            # kurtosis = kurtosis(vals)
-            col = [mean, mad, std, inqr, max, min]
+            skewness = skew(vals)
+            kurt = kurtosis(vals)
+            col = [mean, mad, std, inqr, max, min, skewness, kurt]
             X.extend(col)
 
         for i, n in enumerate(X):
