@@ -3,17 +3,8 @@ syntax = "proto3";
 package relay_node;
 
 // NOTE: Providing a value of 0 will render the field not provided
-message Values {
-    float acceleration_x = 1;
-    float acceleration_y = 2;
-    float acceleration_z = 3;
-    float gyro_x = 4;
-    float gyro_y = 5;
-    float gyro_z = 6;
-}
-
 message FromRelayNodeRequest {
-    repeated Values values = 1;
+    repeated float values = 1;
     int32 player_id = 2;
     bool shoot_detected = 3;
     bool ir_detected = 4;

@@ -5,22 +5,6 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Values(_message.Message):
-    __slots__ = ("acceleration_x", "acceleration_y", "acceleration_z", "gyro_x", "gyro_y", "gyro_z")
-    ACCELERATION_X_FIELD_NUMBER: _ClassVar[int]
-    ACCELERATION_Y_FIELD_NUMBER: _ClassVar[int]
-    ACCELERATION_Z_FIELD_NUMBER: _ClassVar[int]
-    GYRO_X_FIELD_NUMBER: _ClassVar[int]
-    GYRO_Y_FIELD_NUMBER: _ClassVar[int]
-    GYRO_Z_FIELD_NUMBER: _ClassVar[int]
-    acceleration_x: float
-    acceleration_y: float
-    acceleration_z: float
-    gyro_x: float
-    gyro_y: float
-    gyro_z: float
-    def __init__(self, acceleration_x: _Optional[float] = ..., acceleration_y: _Optional[float] = ..., acceleration_z: _Optional[float] = ..., gyro_x: _Optional[float] = ..., gyro_y: _Optional[float] = ..., gyro_z: _Optional[float] = ...) -> None: ...
-
 class FromRelayNodeRequest(_message.Message):
     __slots__ = ("values", "player_id", "shoot_detected", "ir_detected", "test_action")
     VALUES_FIELD_NUMBER: _ClassVar[int]
@@ -28,12 +12,12 @@ class FromRelayNodeRequest(_message.Message):
     SHOOT_DETECTED_FIELD_NUMBER: _ClassVar[int]
     IR_DETECTED_FIELD_NUMBER: _ClassVar[int]
     TEST_ACTION_FIELD_NUMBER: _ClassVar[int]
-    values: _containers.RepeatedCompositeFieldContainer[Values]
+    values: _containers.RepeatedScalarFieldContainer[float]
     player_id: int
     shoot_detected: bool
     ir_detected: bool
     test_action: str
-    def __init__(self, values: _Optional[_Iterable[_Union[Values, _Mapping]]] = ..., player_id: _Optional[int] = ..., shoot_detected: bool = ..., ir_detected: bool = ..., test_action: _Optional[str] = ...) -> None: ...
+    def __init__(self, values: _Optional[_Iterable[float]] = ..., player_id: _Optional[int] = ..., shoot_detected: bool = ..., ir_detected: bool = ..., test_action: _Optional[str] = ...) -> None: ...
 
 class Player(_message.Message):
     __slots__ = ("hp", "bullets", "bombs", "shield_hp", "deaths", "shields")
