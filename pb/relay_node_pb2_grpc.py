@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import pb. relay_node_pb2 as relay__node__pb2
+import pb.relay_node_pb2 as relay__node__pb2
 
 
 class RelayNodeStub(object):
