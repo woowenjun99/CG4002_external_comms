@@ -18,4 +18,4 @@ def evaluation_client_process(
         predicted_game_state: str = send_eval_server_game_state_queue.get()
         client.send_message(predicted_game_state)
         updated_game_state_str = client.receive_message()
-        update_game_state_queue.put(updated_game_state_str)
+        if updated_game_state_str: update_game_state_queue.put(updated_game_state_str)

@@ -62,7 +62,8 @@ def game_engine_process(
         if (number_of_fire > 0):
             for _ in range(number_of_fire):
                 game_engine.perform_action("oppStepIntoBomb", player_id, True)
-
+        
+        previous_correct_game_state = game_engine.game_state.get_dict()
         status = game_engine.perform_action(action, player_id, is_in_vision)
         predicted_game_state = game_engine.game_state.get_dict()
 
@@ -75,8 +76,8 @@ def game_engine_process(
                     "game_state": predicted_game_state,
                     "player_id": player_id
                 }))
-                correct_game_state = loads(update_game_state_queue.get(timeout=2))
-            except: correct_game_state = predicted_game_state.copy()
+                correct_game_state = loads(update_game_state_queue.get(timeout=1.5))
+            except: correct_game_state = previous_correct_game_state.copy()
 
         # Update the game state locally
         game_engine.game_state.set_state(correct_game_state)

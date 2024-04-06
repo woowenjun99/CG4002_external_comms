@@ -16,6 +16,9 @@ class EvaluationClient:
         self.send_message("hello")
 
     def receive_message(self) -> str:
-        message = self.clientSocket.recv(2048)
-        message = message.decode()
-        return message.split("_", maxsplit=1)[1]
+        try:
+            message = self.clientSocket.recv(2048, timeout=1.5)
+            message = message.decode()
+            return message.split("_", maxsplit=1)[1]
+        except:
+            return None
