@@ -24,9 +24,12 @@ def game_engine_process(
     while True:
         if player_turn.value == 1:
             message = loads(action_queue_1.get())
+            print("TOP1" + message["action"])
 
         elif player_turn.value == 2:
             message = loads(action_queue_2.get())
+            print("TOP2" + message["action"])
+
             
         action = message["action"]
         player_id = message["player_id"]
@@ -121,6 +124,7 @@ def game_engine_process(
             }))
 
             print("Adding checkpoint for player 1")
+
             action_queue_2.put(dumps({
                 "action": "CHECKPOINT",
                 "player_id": 2
@@ -129,6 +133,8 @@ def game_engine_process(
 
 
             while not action_queue_1.empty(): 
+                print("Current for p1")
+                print(current)
                 current = loads(action_queue_1.get())
                 if current["action"] == "CHECKPOINT": 
                     print("Checkpoint reached for player 1")
@@ -137,6 +143,8 @@ def game_engine_process(
             
             while not action_queue_2.empty(): 
                 current = loads(action_queue_2.get())
+                print("Current for p2")
+                print(current)
                 if current["action"] == "CHECKPOINT": 
                     print("Checkpoint reached for player 2")
                     break
