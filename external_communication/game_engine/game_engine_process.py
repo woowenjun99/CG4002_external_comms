@@ -19,12 +19,13 @@ def game_engine_process(
     game_engine = GameEngine(num_players, does_not_have_visualiser)
     action_not_requiring_visibility_check = ["oppStepIntoBomb", "logout"]
     action_not_requiring_update_to_eval_server = ["oppStepIntoBomb"]
-    # non-blocked
-    while True and player_turn.value != 3:
-        if player_turn.value == 1:
+  
+
+    while True:
+        if player_turn.value == 1 and player_turn.value != 3:
             message = loads(action_queue_1.get())
 
-        elif player_turn.value == 2:
+        elif player_turn.value == 2 and player_turn.value != 3:
             message = loads(action_queue_2.get())
             
         action = message["action"]
@@ -110,7 +111,6 @@ def game_engine_process(
         # now we switch the player turn
         player_turn.value = 2 if player_turn.value == 1 else 1
         
-
         # we are at the next stage, we flush 
         if player_turn.value == 1:
             # player_turn 3 means blocked
