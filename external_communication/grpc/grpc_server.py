@@ -17,18 +17,8 @@ class RelayNodeServicer(RelayNodeServicer):
         if request.test_action:
             action = request.test_action
         elif not request.shoot_detected:
-            received_data = []
-            for value in request.values:
-                received_data.append([
-                    value.acceleration_x, 
-                    value.acceleration_y,
-                    value.acceleration_z,
-                    value.gyro_x,
-                    value.gyro_y,
-                    value.gyro_z,
-                ])
             try:
-                action = self.ai.process(received_data)
+                action = self.ai.process(request.values)
             except:
                 action = "gun"
         else:

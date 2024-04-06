@@ -13,7 +13,7 @@ message Values {
 }
 
 message FromRelayNodeRequest {
-    repeated Values values = 1;
+    repeated double values = 1;
     int32 player_id = 2;
     bool shoot_detected = 3;
     bool ir_detected = 4;

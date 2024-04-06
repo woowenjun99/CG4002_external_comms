@@ -28,12 +28,12 @@ class FromRelayNodeRequest(_message.Message):
     SHOOT_DETECTED_FIELD_NUMBER: _ClassVar[int]
     IR_DETECTED_FIELD_NUMBER: _ClassVar[int]
     TEST_ACTION_FIELD_NUMBER: _ClassVar[int]
-    values: _containers.RepeatedCompositeFieldContainer[Values]
+    values: _containers.RepeatedScalarFieldContainer[float]
     player_id: int
     shoot_detected: bool
     ir_detected: bool
     test_action: str
-    def __init__(self, values: _Optional[_Iterable[_Union[Values, _Mapping]]] = ..., player_id: _Optional[int] = ..., shoot_detected: bool = ..., ir_detected: bool = ..., test_action: _Optional[str] = ...) -> None: ...
+    def __init__(self, values: _Optional[_Iterable[float]] = ..., player_id: _Optional[int] = ..., shoot_detected: bool = ..., ir_detected: bool = ..., test_action: _Optional[str] = ...) -> None: ...
 
 class Player(_message.Message):
     __slots__ = ("hp", "bullets", "bombs", "shield_hp", "deaths", "shields")
