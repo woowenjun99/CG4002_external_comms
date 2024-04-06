@@ -6,10 +6,8 @@ from json import loads, dumps
 class MqttServer:
     def __init__(
             self,
-            action_queue: Queue,
             incoming_from_mqtt_queue: Queue
         ):
-        self.action_queue = action_queue
         self.client = Client()
         self.incoming_from_mqtt_queue = incoming_from_mqtt_queue
 
@@ -21,12 +19,12 @@ class MqttServer:
             self.incoming_from_mqtt_queue.put(msg.payload.decode())
             return
 
-        message = loads(msg.payload.decode())
-        self.action_queue.put(dumps({
-            "action": "oppStepIntoBomb",
-            "bomb_id": message["bomb_id"],
-            "player_id": message["player_id"]
-        }))
+        # message = loads(msg.payload.decode())
+        # self.action_queue.put(dumps({
+        #     "action": "oppStepIntoBomb",
+        #     "bomb_id": message["bomb_id"],
+        #     "player_id": message["player_id"]
+        # }))
 
     def initialise_server(self):
         self.client.on_connect = self.__on_connect

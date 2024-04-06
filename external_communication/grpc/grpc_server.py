@@ -6,8 +6,9 @@ import pb.relay_node_pb2 as relay__node__pb2
 from utils.logger import Logger
 
 class RelayNodeServicer(RelayNodeServicer):
-    def __init__(self, action_queue: Queue):
-        self.action_queue = action_queue
+    def __init__(self, action_queue_1: Queue, action_queue_2):
+        self.action_queue_1 = action_queue_1
+        self.action_queue_2 = action_queue_2
         self.ai = AILogic()
         super().__init__()
 
@@ -24,10 +25,17 @@ class RelayNodeServicer(RelayNodeServicer):
         else:
             action = "gun"
 
-        self.action_queue.put(dumps({ 
-            "action": action,
-            "player_id": request.player_id
-        }))
+        if request.player_id == 1:
+            self.action_queue_1.put(dumps({ 
+                "action": action,
+                "player_id": request.player_id
+            }))
+        elif request.player_id == 2:
+            self.action_queue_2.put(dumps({ 
+                "action": action,
+                "player_id": request.player_id
+            }))
+        
         return relay__node__pb2.FromRelayNodeResponse()
     
     def processGameState(self, request, context):

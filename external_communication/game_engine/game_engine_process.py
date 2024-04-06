@@ -4,21 +4,28 @@ from json import dumps, loads
 from time import time
 
 def game_engine_process(
-    action_queue: Queue,
+    action_queue_1: Queue,
+    action_queue_2: Queue,
     incoming_from_mqtt_queue: Queue, 
     outgoing_to_mqtt_queue: Queue,
     send_eval_server_game_state_queue: Queue,
     update_game_state_queue: Queue,
     num_players: int,
     does_not_have_visualiser,
-    grpc_client_queue: Queue
+    grpc_client_queue: Queue,
+    player_turn
 ):
     # Initialise game engine and send the initial values over
     game_engine = GameEngine(num_players, does_not_have_visualiser)
     action_not_requiring_visibility_check = ["oppStepIntoBomb", "logout"]
     action_not_requiring_update_to_eval_server = ["oppStepIntoBomb"]
     while True:
-        message = loads(action_queue.get())
+        if player_turn.value == 1:
+            message = loads(action_queue_1.get())
+            
+        elif player_turn.value == 2:
+            message = loads(action_queue_2.get())
+            
         action = message["action"]
         player_id = message["player_id"]
         timestamp = time()
@@ -98,3 +105,6 @@ def game_engine_process(
             "p1": correct_game_state["p1"],
             "p2": correct_game_state["p2"]
         }))
+
+        # now we switch the player turn
+        player_turn.value = 2 if player_turn.value == 1 else 1

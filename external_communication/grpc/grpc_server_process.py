@@ -6,10 +6,10 @@ from utils.logger import Logger
 from logging import ERROR
 from multiprocessing import Queue
 
-def grpc_server_process(action_queue: Queue):
+def grpc_server_process(action_queue_1: Queue, action_queue_2: Queue):
     try:
         server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-        relay_node_pb2_grpc.add_RelayNodeServicer_to_server(RelayNodeServicer(action_queue), server)
+        relay_node_pb2_grpc.add_RelayNodeServicer_to_server(RelayNodeServicer(action_queue_1, action_queue_2), server)
         server.add_insecure_port("[::]:50051")
         server.start()
         server.wait_for_termination()

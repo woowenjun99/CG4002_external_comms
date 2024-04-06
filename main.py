@@ -1,4 +1,4 @@
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Queue, Value
 from external_communication.grpc.grpc_server_process import grpc_server_process
 from external_communication.mqtt.mqtt_server_process import mqtt_server_process
 from external_communication.evaluation_client.evaluation_client_process import evaluation_client_process
@@ -33,15 +33,18 @@ if __name__ == "__main__":
     outgoing_queue_to_update_devices = Queue()
     incoming_from_mqtt_queue = Queue()
     grpc_client_queue = Queue()
-    action_queue = Queue()
-
+    action_queue_1 = Queue()
+    action_queue_2 = Queue()
+    player_turn = Value('i', 1)
+    
     # Spawn the processes
-    p1 = Process(target=grpc_server_process, args=[action_queue])
-    p2 = Process(target=mqtt_server_process, args=[action_queue, incoming_from_mqtt_queue])
+    p1 = Process(target=grpc_server_process, args=[action_queue_1, action_queue_2])
+    p2 = Process(target=mqtt_server_process, args=[incoming_from_mqtt_queue])
     p3 = Process(target=evaluation_client_process, args=[send_eval_server_game_state_queue, update_game_state_queue, port_num])
     p4 = Process(target=mqtt_client_process, args=[outgoing_to_mqtt_queue])
     p5 = Process(target=game_engine_process, args=[
-        action_queue, 
+        action_queue_1, 
+        action_queue_2,
         incoming_from_mqtt_queue, 
         outgoing_to_mqtt_queue,
         send_eval_server_game_state_queue,
