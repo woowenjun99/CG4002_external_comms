@@ -38,7 +38,7 @@ if __name__ == "__main__":
     player_turn = Value('i', 1)
 
     # Spawn the processes
-    p1 = Process(target=grpc_server_process, args=[action_queue_1, action_queue_2])
+    p1 = Process(target=grpc_server_process, args=[action_queue_1, action_queue_2, player_turn])
     p2 = Process(target=mqtt_server_process, args=[incoming_from_mqtt_queue])
     p3 = Process(target=evaluation_client_process, args=[send_eval_server_game_state_queue, update_game_state_queue, port_num])
     p4 = Process(target=mqtt_client_process, args=[outgoing_to_mqtt_queue])
