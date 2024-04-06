@@ -123,11 +123,11 @@ def game_engine_process(
             }))
 
             while not action_queue_1.empty(): 
-                current = action_queue_1.get_nowait()
+                current = loads(action_queue_1.get_nowait())
                 if current["action"] == "CHECKPOINT": break
             
             while not action_queue_2.empty(): 
-                current = action_queue_2.get_nowait()
+                current = loads(action_queue_2.get_nowait())
                 if current["action"] == "CHECKPOINT": break
 
 
