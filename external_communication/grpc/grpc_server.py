@@ -20,12 +20,12 @@ class RelayNodeServicer(RelayNodeServicer):
             received_data = []
             for value in request.values:
                 received_data.append([
-                    int(value.acceleration_x * 1000), 
-                    int(value.acceleration_y * 1000),
-                    int(value.acceleration_z * 1000),
-                    int(value.gyro_x * 1000),
-                    int(value.gyro_y * 1000),
-                    int(value.gyro_z * 1000),
+                    value.acceleration_x, 
+                    value.acceleration_y,
+                    value.acceleration_z,
+                    value.gyro_x,
+                    value.gyro_y,
+                    value.gyro_z,
                 ])
             try:
                 action = self.ai.process(received_data)
