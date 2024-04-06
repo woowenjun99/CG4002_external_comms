@@ -73,7 +73,7 @@ def game_engine_process(
                 send_eval_server_game_state_queue.put(dumps({
                     "action": action,
                     "game_state": predicted_game_state,
-                    "player_id": 1 if player_id == 2 else 1
+                    "player_id": player_id
                 }))
                 correct_game_state = loads(update_game_state_queue.get(timeout=2))
             except: correct_game_state = predicted_game_state.copy()
