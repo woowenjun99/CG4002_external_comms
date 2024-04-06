@@ -131,8 +131,8 @@ def game_engine_process(
             }))
             print("Adding checkpoint for player 2")
 
-
-            while not action_queue_1.empty(): 
+            while True: 
+                print("Im in player 1 loop waiting for checkpoint")
                 current = loads(action_queue_1.get())
                 print("Current for p1")
                 print(current)
@@ -140,8 +140,9 @@ def game_engine_process(
                     print("Checkpoint reached for player 1")
                     break
 
-            
-            while not action_queue_2.empty(): 
+
+            while True: 
+                print("Im in player 2 loop waiting for checkpoint")
                 current = loads(action_queue_2.get())
                 print("Current for p2")
                 print(current)
