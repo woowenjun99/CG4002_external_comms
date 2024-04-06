@@ -117,7 +117,7 @@ def game_engine_process(
                 "action": "CHECKPOINT",
                 "player_id": 1
             }))
-            action_queue_1.put(dumps({
+            action_queue_2.put(dumps({
                 "action": "CHECKPOINT",
                 "player_id": 2
             }))
