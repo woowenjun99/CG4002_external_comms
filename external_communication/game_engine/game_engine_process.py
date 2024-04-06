@@ -138,7 +138,7 @@ def game_engine_process(
             while not action_queue_2.empty(): 
                 current = loads(action_queue_2.get())
                 if current["action"] == "CHECKPOINT": 
-                    print("Checkpoint reached for player 1")
+                    print("Checkpoint reached for player 2")
                     break
 
             player_turn.value = 1
