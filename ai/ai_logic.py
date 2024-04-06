@@ -1,9 +1,6 @@
 from typing import List
-from scipy.stats import median_absolute_deviation, iqr
 from pynq import Overlay, allocate
 import numpy as np
-import statistics
-from sklearn.preprocessing import MinMaxScaler
 
 class AILogic:
     def __init__(self):
@@ -12,28 +9,11 @@ class AILogic:
         self.input_buffer = allocate(shape=(36,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
     
-    def process(self, message: List[List[float]]) -> str:
+    def process(self, message: List[float]) -> str:
         ####################### Start of AI logic ########################
         ai_actions = ["ironMan", "hulk", "captAmerica", "shangChi", "bomb", "shield", "reload", "logout", "nothing"]
+        for index, num in enumerate(message): self.input_buffer[index] = num
         
-        # Normalise the data
-        scaler = MinMaxScaler()
-        scaler.fit(message)
-        normalised_new_data = scaler.transform(message)
-        npx = np.array(normalised_new_data)
-        input_buffer = []
-        for i in range(6):
-            vals = npx[:,i]
-            mean = statistics.mean(vals)
-            mad = median_absolute_deviation(vals)
-            std = statistics.stdev(vals)
-            inqr = iqr(vals)
-            max = np.max(vals)
-            min = np.min(vals)
-            col = [mean, mad, std, inqr, max, min]
-            input_buffer.extend(col)
-        
-        self.input_buffer = input_buffer
         try:
             self.dma.sendchannel.transfer(self.input_buffer)
             self.dma.recvchannel.transfer(self.output_buffer)
@@ -44,6 +24,5 @@ class AILogic:
             print(f"ERROR is {e}")
             result = ai_actions[-1]
         print(f"THE RESULT IS {result}")
-        # result = ai_actions[randint(0, len(ai_actions) - 1)]
         ####################### End of AI logic ##########################
         return result
