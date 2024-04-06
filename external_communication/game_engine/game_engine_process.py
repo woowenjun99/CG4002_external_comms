@@ -51,11 +51,11 @@ def game_engine_process(
                     "timestamp": timestamp
                 }))
                 # NOTE Need to check if player_id == received_message.player_id
-                received_message = incoming_from_mqtt_queue.get(timeout=2)
+                received_message = incoming_from_mqtt_queue.get_nowait()
                 is_in_vision = loads(received_message)["opponent_in_view"]
                 number_of_fire = loads(received_message)["number_of_fire"]
             except: 
-                is_in_vision = False
+                is_in_vision = True
                 number_of_fire = 0
 
         if (number_of_fire > 0):
