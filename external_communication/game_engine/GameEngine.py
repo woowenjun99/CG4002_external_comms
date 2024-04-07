@@ -8,7 +8,9 @@ class GameEngine:
         # create the players
         self.game_state     = GameState()
         self.num_players    = num_players
-        self.does_not_have_visualizer = does_not_have_visualizer 
+        self.does_not_have_visualizer = does_not_have_visualizer
+        self.roundsCompleted = 0
+        
 
     def perform_action(self, action, player_id, can_see_opp):
         """

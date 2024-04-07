@@ -34,9 +34,27 @@ def game_engine_process(
         action = message["action"]
         player_id = message["player_id"]
         timestamp = time()
-        
+
+        if action == "logout":
+            # failsafe
+            if game_engine.roundsCompleted < 16:
+                # we don't process it, let's ask the player to redo!
+                predicted_game_state = game_engine.game_state.get_dict()
+            outgoing_to_mqtt_queue.put(dumps({
+                "topic": "to_visualiser/gamestate/",
+                "action": action,
+                "game_state": {
+                    "p1": predicted_game_state["p1"],
+                    "p2": predicted_game_state["p2"]
+                },
+                "player_id": player_id,
+                "status": "Please Redo! Type 2!",
+                "timestamp": timestamp
+            }))
+            continue
+
         # If there is no action, we just inform the MQTT
-        if action == "nothing":
+        if action == "nothing" :
             predicted_game_state = game_engine.game_state.get_dict()
             outgoing_to_mqtt_queue.put(dumps({
                 "topic": "to_visualiser/gamestate/",
@@ -68,6 +86,7 @@ def game_engine_process(
                 is_in_vision = loads(received_message)["opponent_in_view"]
                 number_of_fire = loads(received_message)["number_of_fire"]
             except: 
+                # TODO: REMEMBER TO CHANGE TO FALSE!
                 is_in_vision = True
                 number_of_fire = 0
 
@@ -88,6 +107,9 @@ def game_engine_process(
                     "player_id": player_id
                 }))
                 correct_game_state = loads(update_game_state_queue.get(timeout=2))
+                # successful round
+                game_engine.roundsCompleted += 1
+
             except: correct_game_state = predicted_game_state.copy()
 
         # Update the game state locally
