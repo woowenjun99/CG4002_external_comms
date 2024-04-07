@@ -37,7 +37,7 @@ def game_engine_process(
 
         if action == "logout":
             # failsafe
-            # we at least need to have 32 actions done
+            # we at least need to have 32 actions finished before this, means this can only be 33th onwards
             if game_engine.roundsCompleted <= 32:
                 # we don't process it, let's ask the player to redo!
                 predicted_game_state = game_engine.game_state.get_dict()
@@ -70,6 +70,8 @@ def game_engine_process(
             }))
             continue
 
+        # increasing the number of rounds
+        game_engine.roundsCompleted += 1
         is_in_vision = True
         number_of_fire = 0
         if action not in action_not_requiring_visibility_check:
@@ -108,7 +110,6 @@ def game_engine_process(
                     "player_id": player_id
                 }))
                 correct_game_state = loads(update_game_state_queue.get(timeout=2))
-                game_engine.roundsCompleted += 1
 
             except: correct_game_state = predicted_game_state.copy()
 
