@@ -43,18 +43,18 @@ def game_engine_process(
                 print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
                 # we don't process it, let's ask the player to redo!
                 predicted_game_state = game_engine.game_state.get_dict()
-            outgoing_to_mqtt_queue.put(dumps({
-                "topic": "to_visualiser/gamestate/",
-                "action": action,
-                "game_state": {
-                    "p1": predicted_game_state["p1"],
-                    "p2": predicted_game_state["p2"]
-                },
-                "player_id": player_id,
-                "status": "Please Redo! Type 2!",
-                "timestamp": timestamp
-            }))
-            continue
+                outgoing_to_mqtt_queue.put(dumps({
+                    "topic": "to_visualiser/gamestate/",
+                    "action": action,
+                    "game_state": {
+                        "p1": predicted_game_state["p1"],
+                        "p2": predicted_game_state["p2"]
+                    },
+                    "player_id": player_id,
+                    "status": "Please Redo! Type 2!",
+                    "timestamp": timestamp
+                }))
+                continue
 
         # If there is no action, we just inform the MQTT
         if action == "nothing" :
