@@ -16,13 +16,14 @@ class RelayNodeServicer(RelayNodeServicer):
 
     def processAi(self, request, context):
         # Logger.log(request.player_id)
-        Logger.log("received")
+        Logger.log(f"Received from {request.player_id} with shoot_detected {request.shoot_detected}")
         action = None
         if request.test_action:
             action = request.test_action
         elif not request.shoot_detected:
             try:
                 action = self.ai.process(request.values)
+                print(f"Predicted action by {request.player_id} is {action}")
             except:
                 action = "gun"
         else:
