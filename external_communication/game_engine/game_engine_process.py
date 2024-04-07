@@ -30,6 +30,7 @@ def game_engine_process(
             message = loads(action_queue_2.get())
             print("TOP2" + message["action"])
 
+        print("Actions completed: " + str(game_engine.roundsCompleted))
             
         action = message["action"]
         player_id = message["player_id"]
@@ -39,6 +40,7 @@ def game_engine_process(
             # failsafe
             # we at least need to have 32 actions finished before this, means this can only be 33th onwards
             if game_engine.roundsCompleted <= 32:
+                print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
                 # we don't process it, let's ask the player to redo!
                 predicted_game_state = game_engine.game_state.get_dict()
             outgoing_to_mqtt_queue.put(dumps({
