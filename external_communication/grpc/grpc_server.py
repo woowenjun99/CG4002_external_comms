@@ -15,7 +15,8 @@ class RelayNodeServicer(RelayNodeServicer):
         super().__init__()
 
     def processAi(self, request, context):
-        Logger.log(request)
+        # Logger.log(request.player_id)
+        Logger.log("received")
         action = None
         if request.test_action:
             action = request.test_action
