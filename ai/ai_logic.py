@@ -46,7 +46,7 @@ mappings ={'0': 'shield',
     '6': 'captAmerica',
     '7': 'ironMan'}
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cpu")
 
 class AILogic:
     def __init__(self):
@@ -57,8 +57,8 @@ class AILogic:
 
     def process(self, message: List[float]) -> str:
             sample = message
-            sample = [sample[i:i + 6] for i in range(0, len(sample), 6)]
-            class_index = predict(sample)
+            final = [sample[i:i + 6] for i in range(0, len(sample), 6)]
+            class_index = predict(self.model, final)
             # print(class_index)
             # print("Prediction is " + mappings[str(class_index)])
             action_name = mappings[str(class_index)]
