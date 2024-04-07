@@ -44,14 +44,16 @@ mappings ={'0': 'shield',
     '4': 'reload',
     '5': 'shangChi',
     '6': 'captAmerica',
-    '7': 'ironMan'}
+    '7': 'ironMan',
+    '8': 'nothing'}
 
 device = torch.device("cpu")
 
 class AILogic:
     def __init__(self):
-        self.model = LSTMModel(num_classes=8)
-        self.model.load_state_dict(torch.load('/home/xilinx/external_comms/ai/lstm_model_94.pth'))
+        self.model = LSTMModel(num_classes=9)
+        # self.model.load_state_dict(torch.load('/home/xilinx/external_comms/ai/lstm_model_94.pth'))
+        self.model.load_state_dict(torch.load('/home/xilinx/external_comms/ai/lstm_with_nothing_state_v4.pth'))
         self.model.to(device)
         self.model.eval()
 
