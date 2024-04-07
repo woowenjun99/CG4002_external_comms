@@ -37,7 +37,8 @@ def game_engine_process(
 
         if action == "logout":
             # failsafe
-            if game_engine.roundsCompleted < 16:
+            # we at least need to have 32 actions done
+            if game_engine.roundsCompleted <= 32:
                 # we don't process it, let's ask the player to redo!
                 predicted_game_state = game_engine.game_state.get_dict()
             outgoing_to_mqtt_queue.put(dumps({
@@ -107,7 +108,6 @@ def game_engine_process(
                     "player_id": player_id
                 }))
                 correct_game_state = loads(update_game_state_queue.get(timeout=2))
-                # successful round
                 game_engine.roundsCompleted += 1
 
             except: correct_game_state = predicted_game_state.copy()
