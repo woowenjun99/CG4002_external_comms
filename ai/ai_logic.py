@@ -1,9 +1,9 @@
 from typing import List
 from time import perf_counter
-from scipy.stats import median_absolute_deviation, iqr, skew, kurtosis
+#from scipy.stats import median_absolute_deviation, iqr, skew, kurtosis
 from pynq import Overlay, allocate
 import numpy as np
-import statistics
+#import statistics
 from utils.logger import Logger, INFO
 
 class AILogic:
