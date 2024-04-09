@@ -38,8 +38,8 @@ def game_engine_process(
 
         if action == "logout":
             # failsafe
-            # we at least need to have 40 actions (20 rounds) finished before this, means this can only be 41st (21st) onwards (total is 22 or 23)
-            if game_engine.roundsCompleted <= 40:
+            # we at least need to have 38 actions (19 rounds) finished before this, means this can only be 39th action (20th) onwards (total is 22 or 23)
+            if game_engine.roundsCompleted <= 38:
                 print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
                 # we don't process it, let's ask the player to redo!
                 predicted_game_state = game_engine.game_state.get_dict()
