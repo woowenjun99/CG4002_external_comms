@@ -23,8 +23,8 @@ def game_engine_process(
     # NOTE Take this opportunity to make a handshake
     predicted_game_state = game_engine.game_state.get_dict()
     grpc_client_queue.put(dumps({
-        "p1": correct_game_state["p1"],
-        "p2": correct_game_state["p2"]
+        "p1": predicted_game_state["p1"],
+        "p2": predicted_game_state["p2"]
     }))
 
     while True:
