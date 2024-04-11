@@ -19,23 +19,12 @@ class RelayNodeStub(object):
                 request_serializer=relay__node__pb2.FromRelayNodeRequest.SerializeToString,
                 response_deserializer=relay__node__pb2.FromRelayNodeResponse.FromString,
                 )
-        self.processGameState = channel.unary_unary(
-                '/relay_node.RelayNode/processGameState',
-                request_serializer=relay__node__pb2.GameStateRequest.SerializeToString,
-                response_deserializer=relay__node__pb2.GameStateResponse.FromString,
-                )
 
 
 class RelayNodeServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def processAi(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def processGameState(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -48,11 +37,6 @@ def add_RelayNodeServicer_to_server(servicer, server):
                     servicer.processAi,
                     request_deserializer=relay__node__pb2.FromRelayNodeRequest.FromString,
                     response_serializer=relay__node__pb2.FromRelayNodeResponse.SerializeToString,
-            ),
-            'processGameState': grpc.unary_unary_rpc_method_handler(
-                    servicer.processGameState,
-                    request_deserializer=relay__node__pb2.GameStateRequest.FromString,
-                    response_serializer=relay__node__pb2.GameStateResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -78,22 +62,5 @@ class RelayNode(object):
         return grpc.experimental.unary_unary(request, target, '/relay_node.RelayNode/processAi',
             relay__node__pb2.FromRelayNodeRequest.SerializeToString,
             relay__node__pb2.FromRelayNodeResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def processGameState(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/relay_node.RelayNode/processGameState',
-            relay__node__pb2.GameStateRequest.SerializeToString,
-            relay__node__pb2.GameStateResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

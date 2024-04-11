@@ -20,7 +20,6 @@ def game_engine_process(
     action_not_requiring_visibility_check = ["oppStepIntoBomb", "logout"]
     action_not_requiring_update_to_eval_server = ["oppStepIntoBomb"]
   
-
     while True:
         if player_turn.value == 1:
             message = loads(action_queue_1.get())
@@ -36,25 +35,28 @@ def game_engine_process(
         player_id = message["player_id"]
         timestamp = time()
 
-        if action == "logout":
-            # failsafe
-            # we at least need to have 38 actions (19 rounds) finished before this, means this can only be 39th action (20th) onwards (total is 22 or 23)
-            if game_engine.roundsCompleted <= 38:
-                print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
-                # we don't process it, let's ask the player to redo!
-                predicted_game_state = game_engine.game_state.get_dict()
-                outgoing_to_mqtt_queue.put(dumps({
-                    "topic": "to_visualiser/gamestate/",
-                    "action": action,
-                    "game_state": {
-                        "p1": predicted_game_state["p1"],
-                        "p2": predicted_game_state["p2"]
-                    },
-                    "player_id": player_id,
-                    "status": "Please Redo! Type 2!",
-                    "timestamp": timestamp
-                }))
-                continue
+        # failsafe
+        # we at least need to have 38 actions (19 rounds) finished before this, means this can only be 39th action (20th) onwards (total is 22 or 23)
+        if action == "logout" and game_engine.roundsCompleted <= 38:
+            print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
+            # we don't process it, let's ask the player to redo!
+            predicted_game_state = game_engine.game_state.get_dict()
+            outgoing_to_mqtt_queue.put(dumps({
+                "topic": "to_visualiser/gamestate/",
+                "action": action,
+                "game_state": {
+                    "p1": predicted_game_state["p1"],
+                    "p2": predicted_game_state["p2"]
+                },
+                "player_id": player_id,
+                "status": "Please Redo! Type 2!",
+                "timestamp": timestamp
+            }))
+            grpc_client_queue.put(dumps({
+                "p1": predicted_game_state["p1"],
+                "p2": predicted_game_state["p2"]
+            }))
+            continue
 
         # If there is no action, we just inform the MQTT
         if action == "nothing" :
@@ -69,6 +71,10 @@ def game_engine_process(
                 "player_id": player_id,
                 "status": "Please Redo!",
                 "timestamp": timestamp
+            }))
+            grpc_client_queue.put(dumps({
+                "p1": predicted_game_state["p1"],
+                "p2": predicted_game_state["p2"]
             }))
             continue
 
@@ -112,7 +118,6 @@ def game_engine_process(
                     "player_id": player_id
                 }))
                 correct_game_state = loads(update_game_state_queue.get(timeout=2))
-
             except: correct_game_state = predicted_game_state.copy()
 
         # Update the game state locally

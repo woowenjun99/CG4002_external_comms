@@ -2,16 +2,6 @@ syntax = "proto3";
 
 package relay_node;
 
-// NOTE: Providing a value of 0 will render the field not provided
-message Values {
-    float acceleration_x = 1;
-    float acceleration_y = 2;
-    float acceleration_z = 3;
-    float gyro_x = 4;
-    float gyro_y = 5;
-    float gyro_z = 6;
-}
-
 message FromRelayNodeRequest {
     repeated double values = 1;
     int32 player_id = 2;
@@ -29,17 +19,11 @@ message Player {
     int32 shields = 6;
 }
 
-message FromRelayNodeResponse {}
-
-message GameStateRequest {
+message FromRelayNodeResponse {
     Player player_one = 1;
     Player player_two = 2;
 }
 
-message GameStateResponse {}
-
 service RelayNode {
     rpc processAi(FromRelayNodeRequest) returns (FromRelayNodeResponse);
-
-    rpc processGameState(GameStateRequest) returns (GameStateResponse);
 }

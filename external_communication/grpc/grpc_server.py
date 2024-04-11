@@ -1,14 +1,16 @@
 from pb.relay_node_pb2_grpc import RelayNodeServicer
 from ai.ai_logic import AILogic
 from multiprocessing import Queue
-from json import dumps
+from json import dumps, loads
 import pb.relay_node_pb2 as relay__node__pb2
 from utils.logger import Logger
 
 class RelayNodeServicer(RelayNodeServicer):
-    def __init__(self, action_queue_1: Queue, action_queue_2: Queue, player_turn):
+    def __init__(self, action_queue_1: Queue, action_queue_2: Queue, player_turn, grpc_client_queue: Queue):
         self.action_queue_1 = action_queue_1
         self.action_queue_2 = action_queue_2
+        self.grpc_client_queue = grpc_client_queue
+
         # player turn is not really used
         self.player_turn = player_turn
         self.ai = AILogic()
@@ -40,7 +42,11 @@ class RelayNodeServicer(RelayNodeServicer):
                 "player_id": request.player_id,
             }))
         
-        return relay__node__pb2.FromRelayNodeResponse()
+        correct_game_state = loads(self.grpc_client_queue.get())
+        return relay__node__pb2.FromRelayNodeResponse(
+            player_one=correct_game_state["p1"],
+            player_two=correct_game_state["p2"]
+        )
     
     def processGameState(self, request, context):
         return relay__node__pb2.GameStateResponse()

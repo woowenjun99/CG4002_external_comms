@@ -4,7 +4,6 @@ from external_communication.mqtt.mqtt_server_process import mqtt_server_process
 from external_communication.evaluation_client.evaluation_client_process import evaluation_client_process
 from external_communication.mqtt.mqtt_client_process import mqtt_client_process
 from external_communication.game_engine.game_engine_process import game_engine_process
-from external_communication.grpc.grpc_client_process import grpc_client_process
 from utils.logger import Logger
 
 def get_user_input():
@@ -54,7 +53,7 @@ if __name__ == "__main__":
         grpc_client_queue,
         player_turn
     ])
-    p6 = Process(target=grpc_client_process, args=[grpc_client_queue])
-    processes = [p1, p2, p3, p4, p5, p6]
+
+    processes = [p1, p2, p3, p4, p5]
     for p in processes: p.start()
     for p in processes: p.join()

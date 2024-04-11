@@ -5,22 +5,6 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class Values(_message.Message):
-    __slots__ = ("acceleration_x", "acceleration_y", "acceleration_z", "gyro_x", "gyro_y", "gyro_z")
-    ACCELERATION_X_FIELD_NUMBER: _ClassVar[int]
-    ACCELERATION_Y_FIELD_NUMBER: _ClassVar[int]
-    ACCELERATION_Z_FIELD_NUMBER: _ClassVar[int]
-    GYRO_X_FIELD_NUMBER: _ClassVar[int]
-    GYRO_Y_FIELD_NUMBER: _ClassVar[int]
-    GYRO_Z_FIELD_NUMBER: _ClassVar[int]
-    acceleration_x: float
-    acceleration_y: float
-    acceleration_z: float
-    gyro_x: float
-    gyro_y: float
-    gyro_z: float
-    def __init__(self, acceleration_x: _Optional[float] = ..., acceleration_y: _Optional[float] = ..., acceleration_z: _Optional[float] = ..., gyro_x: _Optional[float] = ..., gyro_y: _Optional[float] = ..., gyro_z: _Optional[float] = ...) -> None: ...
-
 class FromRelayNodeRequest(_message.Message):
     __slots__ = ("values", "player_id", "shoot_detected", "ir_detected", "test_action")
     VALUES_FIELD_NUMBER: _ClassVar[int]
@@ -52,17 +36,9 @@ class Player(_message.Message):
     def __init__(self, hp: _Optional[int] = ..., bullets: _Optional[int] = ..., bombs: _Optional[int] = ..., shield_hp: _Optional[int] = ..., deaths: _Optional[int] = ..., shields: _Optional[int] = ...) -> None: ...
 
 class FromRelayNodeResponse(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
-
-class GameStateRequest(_message.Message):
     __slots__ = ("player_one", "player_two")
     PLAYER_ONE_FIELD_NUMBER: _ClassVar[int]
     PLAYER_TWO_FIELD_NUMBER: _ClassVar[int]
     player_one: Player
     player_two: Player
     def __init__(self, player_one: _Optional[_Union[Player, _Mapping]] = ..., player_two: _Optional[_Union[Player, _Mapping]] = ...) -> None: ...
-
-class GameStateResponse(_message.Message):
-    __slots__ = ()
-    def __init__(self) -> None: ...
