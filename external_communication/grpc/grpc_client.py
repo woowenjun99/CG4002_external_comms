@@ -7,4 +7,4 @@ class GrpcClient:
         self.stub = RelayNodeStub(channel)
 
     def update_game_state(self, message):
-        self.stub.processGameState(message)
+        self.stub.processGameState(message, wait_for_ready=True)
