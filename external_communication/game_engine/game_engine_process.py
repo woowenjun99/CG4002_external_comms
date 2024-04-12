@@ -4,8 +4,7 @@ from json import dumps, loads
 from time import time
 
 def game_engine_process(
-    action_queue_1: Queue,
-    action_queue_2: Queue,
+    action_queue: Queue,
     incoming_from_mqtt_queue: Queue, 
     outgoing_to_mqtt_queue: Queue,
     send_eval_server_game_state_queue: Queue,
@@ -28,39 +27,35 @@ def game_engine_process(
     }))
 
     while True:
-        if player_turn.value == 1:
-            message = loads(action_queue_1.get())
-            print("TOP1" + message["action"])
-
-        elif player_turn.value == 2:
-            message = loads(action_queue_2.get())
-            print("TOP2" + message["action"])
-
+        message = loads(action_queue.get())
+       
+        print(f"Received message {message["player_id"]} is doing {message["action"]})")
         print("Actions completed: " + str(game_engine.roundsCompleted))
             
         action = message["action"]
         player_id = message["player_id"]
         timestamp = time()
 
-        if action == "logout":
-            # failsafe
-            # we at least need to have 38 actions (19 rounds) finished before this, means this can only be 39th action (20th) onwards (total is 22 or 23)
-            if game_engine.roundsCompleted <= 38:
-                print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
-                # we don't process it, let's ask the player to redo!
-                predicted_game_state = game_engine.game_state.get_dict()
-                outgoing_to_mqtt_queue.put(dumps({
-                    "topic": "to_visualiser/gamestate/",
-                    "action": action,
-                    "game_state": {
-                        "p1": predicted_game_state["p1"],
-                        "p2": predicted_game_state["p2"]
-                    },
-                    "player_id": player_id,
-                    "status": "Please Redo! Type 2!",
-                    "timestamp": timestamp
-                }))
-                continue
+        # remove failsafe
+        # if action == "logout":
+        #     # failsafe
+        #     # we at least need to have 38 actions (19 rounds) finished before this, means this can only be 39th action (20th) onwards (total is 22 or 23)
+        #     if game_engine.roundsCompleted <= 38:
+        #         print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
+        #         # we don't process it, let's ask the player to redo!
+        #         predicted_game_state = game_engine.game_state.get_dict()
+        #         outgoing_to_mqtt_queue.put(dumps({
+        #             "topic": "to_visualiser/gamestate/",
+        #             "action": action,
+        #             "game_state": {
+        #                 "p1": predicted_game_state["p1"],
+        #                 "p2": predicted_game_state["p2"]
+        #             },
+        #             "player_id": player_id,
+        #             "status": "Please Redo! Type 2!",
+        #             "timestamp": timestamp
+        #         }))
+        #         continue
 
         # If there is no action, we just inform the MQTT
         if action == "nothing" :
@@ -142,46 +137,46 @@ def game_engine_process(
             "p2": correct_game_state["p2"]
         }))
 
-        # now we switch the player turn
-        player_turn.value = 2 if player_turn.value == 1 else 1
+        # # now we switch the player turn
+        # player_turn.value = 2 if player_turn.value == 1 else 1
         
-        # we are at the next stage, we flush 
-        if player_turn.value == 1:
-            # player_turn 3 means blocked
-            player_turn.value = 3
-            action_queue_1.put(dumps({
-                "action": "CHECKPOINT",
-                "player_id": 1
-            }))
+        # # we are at the next stage, we flush 
+        # if player_turn.value == 1:
+        #     # player_turn 3 means blocked
+        #     player_turn.value = 3
+        #     action_queue_1.put(dumps({
+        #         "action": "CHECKPOINT",
+        #         "player_id": 1
+        #     }))
 
-            print("Adding checkpoint for player 1")
+        #     print("Adding checkpoint for player 1")
 
-            action_queue_2.put(dumps({
-                "action": "CHECKPOINT",
-                "player_id": 2
-            }))
-            print("Adding checkpoint for player 2")
+        #     action_queue_2.put(dumps({
+        #         "action": "CHECKPOINT",
+        #         "player_id": 2
+        #     }))
+        #     print("Adding checkpoint for player 2")
 
-            while True: 
-                print("Im in player 1 loop waiting for checkpoint")
-                current = loads(action_queue_1.get())
-                print("Current for p1")
-                print(current)
-                if current["action"] == "CHECKPOINT": 
-                    print("Checkpoint reached for player 1")
-                    break
+        #     while True: 
+        #         print("Im in player 1 loop waiting for checkpoint")
+        #         current = loads(action_queue_1.get())
+        #         print("Current for p1")
+        #         print(current)
+        #         if current["action"] == "CHECKPOINT": 
+        #             print("Checkpoint reached for player 1")
+        #             break
 
 
-            while True: 
-                print("Im in player 2 loop waiting for checkpoint")
-                current = loads(action_queue_2.get())
-                print("Current for p2")
-                print(current)
-                if current["action"] == "CHECKPOINT": 
-                    print("Checkpoint reached for player 2")
-                    break
+        #     while True: 
+        #         print("Im in player 2 loop waiting for checkpoint")
+        #         current = loads(action_queue_2.get())
+        #         print("Current for p2")
+        #         print(current)
+        #         if current["action"] == "CHECKPOINT": 
+        #             print("Checkpoint reached for player 2")
+        #             break
 
-            player_turn.value = 1
+        #     player_turn.value = 1
 
 
 
