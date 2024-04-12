@@ -20,6 +20,12 @@ def game_engine_process(
     action_not_requiring_visibility_check = ["oppStepIntoBomb", "logout"]
     action_not_requiring_update_to_eval_server = ["oppStepIntoBomb"]
   
+    # Send the initial game state to the relay node!
+    initial_game_state = game_engine.game_state.get_dict()
+    grpc_client_queue.put(dumps({
+        "p1": initial_game_state["p1"],
+        "p2": initial_game_state["p2"]
+    }))
 
     while True:
         if player_turn.value == 1:
