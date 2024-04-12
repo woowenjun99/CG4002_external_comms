@@ -19,13 +19,7 @@ def game_engine_process(
     game_engine = GameEngine(num_players, does_not_have_visualiser)
     action_not_requiring_visibility_check = ["oppStepIntoBomb", "logout"]
     action_not_requiring_update_to_eval_server = ["oppStepIntoBomb"]
-    
-    # NOTE Take this opportunity to make a handshake
-    predicted_game_state = game_engine.game_state.get_dict()
-    grpc_client_queue.put(dumps({
-        "p1": predicted_game_state["p1"],
-        "p2": predicted_game_state["p2"]
-    }))
+  
 
     while True:
         if player_turn.value == 1:
@@ -93,6 +87,7 @@ def game_engine_process(
                 }))
                 # NOTE Need to check if player_id == received_message.player_id
                 received_message = incoming_from_mqtt_queue.get(timeout=2)
+                print(received_message)
                 is_in_vision = loads(received_message)["opponent_in_view"]
                 number_of_fire = loads(received_message)["number_of_fire"]
             except: 
