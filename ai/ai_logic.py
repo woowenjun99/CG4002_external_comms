@@ -53,7 +53,7 @@ class AILogic:
     def __init__(self):
         self.model = LSTMModel(num_classes=9)
         # self.model.load_state_dict(torch.load('/home/xilinx/external_comms/ai/lstm_model_94.pth'))
-        self.model.load_state_dict(torch.load('/home/xilinx/external_comms/ai/lstm_with_nothing_state_v4.pth'))
+        self.model.load_state_dict(torch.load('/home/xilinx/external_comms/ai/lstm_with_nothing_state_v5.pth'))
         self.model.to(device)
         self.model.eval()
 
