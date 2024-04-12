@@ -105,20 +105,20 @@ def game_engine_process(
 
         # Update the game state logic by getting the correct game state from evaluation server
         # we dont update eval server if its oppstepintobomb
-        if action not in action_not_requiring_update_to_eval_server:
-            try:
-                send_eval_server_game_state_queue.put(dumps({
-                    "action": action,
-                    "game_state": predicted_game_state,
-                    "player_id": player_id
-                }))
-                correct_game_state = loads(update_game_state_queue.get(timeout=2))
+        # if action not in action_not_requiring_update_to_eval_server:
+        #     try:
+        #         send_eval_server_game_state_queue.put(dumps({
+        #             "action": action,
+        #             "game_state": predicted_game_state,
+        #             "player_id": player_id
+        #         }))
+        #         correct_game_state = loads(update_game_state_queue.get(timeout=2))
 
-            except: correct_game_state = predicted_game_state.copy()
+        #     except: correct_game_state = predicted_game_state.copy()
 
-        # Update the game state locally
-        game_engine.game_state.set_state(correct_game_state)
-
+        # # Update the game state locally
+        # game_engine.game_state.set_state(correct_game_state)
+        correct_game_state = predicted_game_state.copy()
         # Update the game state in 2 other processes
         outgoing_to_mqtt_queue.put(dumps({
             "topic": "to_visualiser/gamestate/",
