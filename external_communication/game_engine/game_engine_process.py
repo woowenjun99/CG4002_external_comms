@@ -29,13 +29,14 @@ def game_engine_process(
     while True:
         message = loads(action_queue.get())
        
-        print(f"Received message {message["player_id"]} is doing {message["action"]})")
-        print("Actions completed: " + str(game_engine.roundsCompleted))
             
         action = message["action"]
         player_id = message["player_id"]
         timestamp = time()
 
+        print(f"Received message {player_id} is doing {action}")
+        print("Actions completed: " + str(game_engine.roundsCompleted))
+        
         # remove failsafe
         # if action == "logout":
         #     # failsafe
