@@ -3,8 +3,8 @@ from external_communication.grpc.grpc_server_process import grpc_server_process
 from external_communication.mqtt.mqtt_server_process import mqtt_server_process
 from external_communication.evaluation_client.evaluation_client_process import evaluation_client_process
 from external_communication.mqtt.mqtt_client_process import mqtt_client_process
-from external_communication.game_engine.game_engine_process import game_engine_process as game_engine_process_eval
-from external_communication.game_engine.game_engine_process_freeplay import game_engine_process as game_engine_process_freeplay
+from external_communication.game_engine.game_engine_process import game_engine_process
+from external_communication.game_engine.game_engine_process_freeplay import game_engine_process_freeplay
 from external_communication.grpc.grpc_client_process import grpc_client_process
 from utils.logger import Logger
 
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     action_queue_2 = Queue()
     player_turn = Value('i', 1)
 
-    game_engine_process_selected = game_engine_process_eval if mode == 0 else game_engine_process_freeplay
+    game_engine_process_selected = game_engine_process if mode == 0 else game_engine_process_freeplay
 
     # Spawn the processes
     p1 = Process(target=grpc_server_process, args=[action_queue_1, action_queue_2, player_turn])
