@@ -20,12 +20,12 @@ def get_user_input():
             num_players = int(input("Enter the number of players: "))
             if num_players not in [1, 2]: raise Exception()
             does_not_have_visualiser = int(input("Enter 0 if there is no visualiser. Otherwise enter 1: ")) == 0
-            return [mode, port_num, num_players, does_not_have_visualiser]
+            return [port_num, num_players, does_not_have_visualiser]
         except:
             Logger.log("invalid input format")   
 
 if __name__ == "__main__":
-    mode, port_num, num_players, does_not_have_visualiser = get_user_input()
+    port_num, num_players, does_not_have_visualiser = get_user_input()
 
     send_eval_server_game_state_queue = Queue()
     update_game_state_queue = Queue()
