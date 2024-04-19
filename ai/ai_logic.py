@@ -6,7 +6,7 @@ from scipy.stats import median_absolute_deviation, iqr, skew, kurtosis
 
 class AILogic:
     def __init__(self):
-        overlay = Overlay("/home/xilinx/external_communication/ai/design_1.bit")
+        overlay = Overlay("/home/xilinx/external_comms/ai/design_1.bit")
         self.dma = overlay.axi_dma_0
         self.input_buffer = allocate(shape=(48,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
