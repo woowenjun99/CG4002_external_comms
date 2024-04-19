@@ -4,7 +4,6 @@ from external_communication.mqtt.mqtt_server_process import mqtt_server_process
 from external_communication.evaluation_client.evaluation_client_process import evaluation_client_process
 from external_communication.mqtt.mqtt_client_process import mqtt_client_process
 from external_communication.game_engine.game_engine_process import game_engine_process
-from external_communication.game_engine.game_engine_process_freeplay import game_engine_process_freeplay
 from external_communication.grpc.grpc_client_process import grpc_client_process
 from utils.logger import Logger
 
@@ -17,7 +16,6 @@ def get_user_input():
     """
     while True:
         try:
-            mode = int(input("Enter '0' for eval mode or '1' for freeplay mode "))
             port_num = int(input("Enter a port number: "))
             num_players = int(input("Enter the number of players: "))
             if num_players not in [1, 2]: raise Exception()
@@ -39,14 +37,12 @@ if __name__ == "__main__":
     action_queue_2 = Queue()
     player_turn = Value('i', 1)
 
-    game_engine_process_selected = game_engine_process if mode == 0 else game_engine_process_freeplay
-
     # Spawn the processes
     p1 = Process(target=grpc_server_process, args=[action_queue_1, action_queue_2, player_turn])
     p2 = Process(target=mqtt_server_process, args=[incoming_from_mqtt_queue])
     p3 = Process(target=evaluation_client_process, args=[send_eval_server_game_state_queue, update_game_state_queue, port_num])
     p4 = Process(target=mqtt_client_process, args=[outgoing_to_mqtt_queue])
-    p5 = Process(target=game_engine_process_selected, args=[
+    p5 = Process(target=game_engine_process, args=[
         action_queue_1, 
         action_queue_2,
         incoming_from_mqtt_queue, 
