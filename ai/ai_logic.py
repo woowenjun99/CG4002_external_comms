@@ -21,7 +21,7 @@ class AILogic:
         sample = np.array(final, dtype=np.float64)
 
         X = []
-        sample = final / final.max(axis=0)
+        sample = sample / sample.max(axis=0)
         print(f"SAMPLE: {sample}")
 
         # Scaling the data
