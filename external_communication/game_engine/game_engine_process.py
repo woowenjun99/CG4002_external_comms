@@ -37,27 +37,6 @@ def game_engine_process(
         print(f"Received message {player_id} is doing {action}")
         print("Actions completed: " + str(game_engine.roundsCompleted))
         
-        # remove failsafe
-        # if action == "logout":
-        #     # failsafe
-        #     # we at least need to have 38 actions (19 rounds) finished before this, means this can only be 39th action (20th) onwards (total is 22 or 23)
-        #     if game_engine.roundsCompleted <= 38:
-        #         print(f"Only completed {game_engine.roundsCompleted} actions, cannot logout yet")
-        #         # we don't process it, let's ask the player to redo!
-        #         predicted_game_state = game_engine.game_state.get_dict()
-        #         outgoing_to_mqtt_queue.put(dumps({
-        #             "topic": "to_visualiser/gamestate/",
-        #             "action": action,
-        #             "game_state": {
-        #                 "p1": predicted_game_state["p1"],
-        #                 "p2": predicted_game_state["p2"]
-        #             },
-        #             "player_id": player_id,
-        #             "status": "Please Redo! Type 2!",
-        #             "timestamp": timestamp
-        #         }))
-        #         continue
-
         # If there is no action, we just inform the MQTT
         if action == "nothing" :
             predicted_game_state = game_engine.game_state.get_dict()
@@ -104,19 +83,6 @@ def game_engine_process(
         status = game_engine.perform_action(action, player_id, is_in_vision)
         predicted_game_state = game_engine.game_state.get_dict()
 
-        # Update the game state logic by getting the correct game state from evaluation server
-        # we dont update eval server if its oppstepintobomb
-        # if action not in action_not_requiring_update_to_eval_server:
-        #     try:
-        #         send_eval_server_game_state_queue.put(dumps({
-        #             "action": action,
-        #             "game_state": predicted_game_state,
-        #             "player_id": player_id
-        #         }))
-        #         correct_game_state = loads(update_game_state_queue.get(timeout=2))
-
-        #     except: correct_game_state = predicted_game_state.copy()
-
         # # Update the game state locally
         # game_engine.game_state.set_state(correct_game_state)
         correct_game_state = predicted_game_state.copy()
@@ -137,48 +103,5 @@ def game_engine_process(
             "p1": correct_game_state["p1"],
             "p2": correct_game_state["p2"]
         }))
-
-        # # now we switch the player turn
-        # player_turn.value = 2 if player_turn.value == 1 else 1
-        
-        # # we are at the next stage, we flush 
-        # if player_turn.value == 1:
-        #     # player_turn 3 means blocked
-        #     player_turn.value = 3
-        #     action_queue_1.put(dumps({
-        #         "action": "CHECKPOINT",
-        #         "player_id": 1
-        #     }))
-
-        #     print("Adding checkpoint for player 1")
-
-        #     action_queue_2.put(dumps({
-        #         "action": "CHECKPOINT",
-        #         "player_id": 2
-        #     }))
-        #     print("Adding checkpoint for player 2")
-
-        #     while True: 
-        #         print("Im in player 1 loop waiting for checkpoint")
-        #         current = loads(action_queue_1.get())
-        #         print("Current for p1")
-        #         print(current)
-        #         if current["action"] == "CHECKPOINT": 
-        #             print("Checkpoint reached for player 1")
-        #             break
-
-
-        #     while True: 
-        #         print("Im in player 2 loop waiting for checkpoint")
-        #         current = loads(action_queue_2.get())
-        #         print("Current for p2")
-        #         print(current)
-        #         if current["action"] == "CHECKPOINT": 
-        #             print("Checkpoint reached for player 2")
-        #             break
-
-        #     player_turn.value = 1
-
-
 
 
