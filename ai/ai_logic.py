@@ -2,7 +2,7 @@ from typing import List
 from pynq import Overlay, allocate
 import numpy as np
 import statistics
-from scipy.stats import median_absolute_deviation, iqr, skew, kurtosis
+# from scipy.stats import median_absolute_deviation, iqr, skew, kurtosis
 
 class AILogic:
     def __init__(self):
@@ -26,16 +26,17 @@ class AILogic:
 
         # Scaling the data
         for i in range(6):
-            vals = sample[:,i]
-            mean = statistics.mean(vals)
-            mad = median_absolute_deviation(vals)
-            std = statistics.stdev(vals)
-            inqr = iqr(vals)
-            max = np.max(vals)
-            min = np.min(vals)
-            skewness = skew(vals)
-            kurt = kurtosis(vals)
-            col = [mean, mad, std, inqr, max, min, skewness, kurt]
+            # vals = sample[:,i]
+            # mean = statistics.mean(vals)
+            # mad = median_absolute_deviation(vals)
+            # std = statistics.stdev(vals)
+            # inqr = iqr(vals)
+            # max = np.max(vals)
+            # min = np.min(vals)
+            # skewness = skew(vals)
+            # kurt = kurtosis(vals)
+            # col = [mean, mad, std, inqr, max, min, skewness, kurt]
+            col = [0, 0, 0, 0, 0, 0, 0, 0]
             X.extend(col)
 
         for i, n in enumerate(X):
