@@ -3,6 +3,7 @@ from pynq import Overlay, allocate
 import numpy as np
 import statistics
 from scipy.stats import median_abs_deviation, iqr, skew, kurtosis
+import joblib
 
 class AILogic:
     def __init__(self):
@@ -10,6 +11,7 @@ class AILogic:
         self.dma = overlay.axi_dma_0
         self.input_buffer = allocate(shape=(48,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
+        scaler = joblib.load('scaler.save')
     
     def process(self, message: List[float]) -> str:
         ####################### Start of AI logic ########################
@@ -20,11 +22,11 @@ class AILogic:
         final = [sample[i:i + 6] for i in range(0, len(sample), 6)]
         sample = np.array(final, dtype=np.float64)
 
+        # Scaling the data
         X = []
-        sample = sample / sample.max(axis=0)
+        sample = self.scaler.transform(sample)
         print(f"SAMPLE: {sample}")
 
-        # Scaling the data
         for i in range(6):
             vals = sample[:,i]
             mean = statistics.mean(vals)
