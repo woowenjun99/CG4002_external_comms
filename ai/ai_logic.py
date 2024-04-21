@@ -11,7 +11,7 @@ class AILogic:
         self.dma = overlay.axi_dma_0
         self.input_buffer = allocate(shape=(48,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
-        scaler = joblib.load('scaler.save')
+        self.scaler = joblib.load('/home/xilinx/external_comms/ai/scaler.save')
     
     def process(self, message: List[float]) -> str:
         ####################### Start of AI logic ########################
@@ -21,7 +21,6 @@ class AILogic:
         # transform it from 180 to 30 rows of 6 columns
         final = [sample[i:i + 6] for i in range(0, len(sample), 6)]
         sample = np.array(final, dtype=np.float64)
-        sample = sample.T
 
         # Scaling the data
         X = []
