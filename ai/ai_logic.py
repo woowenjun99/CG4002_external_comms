@@ -11,7 +11,7 @@ class AILogic:
         self.dma = overlay.axi_dma_0
         self.input_buffer = allocate(shape=(48,), dtype=np.float32)
         self.output_buffer = allocate(shape=(1,), dtype=np.float32)
-        self.scaler = joblib.load('scaler.save')
+        self.scaler = joblib.load('/home/xilinx/external_comms/ai/scaler.save')
     
     def process(self, message: List[float]) -> str:
         ####################### Start of AI logic ########################
