@@ -21,6 +21,7 @@ class AILogic:
         # transform it from 180 to 30 rows of 6 columns
         final = [sample[i:i + 6] for i in range(0, len(sample), 6)]
         sample = np.array(final, dtype=np.float64)
+        sample = sample.T
 
         # Scaling the data
         X = []
